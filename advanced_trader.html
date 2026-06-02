@@ -244,39 +244,131 @@
       color: #64748b;
     }
 
-    /* Collapsible AI Panel Dropdown Container */
-    .ai-dropdown-panel {
+    /* SMOOTH INNER TABS INTERFACE FOR AI PROBABILISTIC PANEL */
+    .dropdown-container {
       width: 100%;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      padding: 1.2rem 1.8rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      transition: background 0.3s ease;
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      text-align: left;
     }
 
-    .ai-dropdown-panel:hover {
-      background: rgba(255, 255, 255, 0.05);
+    .dropdown-container h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
     }
 
-    .ai-title-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
+    .dropdown-description {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Segmented Control / Tab Switcher Bar */
+    .ai-tabs-bar {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.35rem;
+      border-radius: 14px;
+      gap: 0.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .ai-inner-tab {
+      padding: 0.65rem 1.4rem;
+      color: #94a3b8;
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .arrow-icon {
-      border: solid #ffffff;
-      border-width: 0 2px 2px 0;
-      display: inline-block;
-      padding: 4px;
-      transform: rotate(45deg);
-      transition: transform 0.3s ease;
+    .ai-inner-tab:hover {
+      color: #ffffff;
+    }
+
+    .ai-inner-tab.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Core Card Layout System */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    @media (max-width: 768px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Smooth Micro-Interactions for Card Grid Filters */
+    .tool-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 1.8rem;
+      cursor: pointer;
+      text-align: left;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition: background 0.4s ease, border 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    }
+
+    .tool-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(124, 58, 237, 0.4);
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    /* Filter Hide Animation Variant */
+    .tool-card.hidden {
+      display: none !important;
+    }
+
+    .tool-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .tool-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #ffffff;
+    }
+
+    .tool-card p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .tool-link {
+      color: #a78bfa;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .tool-card:hover .tool-link {
+      color: #c084fc;
     }
 
     footer {
@@ -340,80 +432,98 @@
         </div>
       </div>
       
-    <!-- DROPDOWN: AI-Powered Analysis Tools -->
-    <div class="dropdown-container">
-      <div class="dropdown-header" onclick="toggleDropdown(event)">
+      <div class="dropdown-container">
         <h2>🤖 AI-Powered Probabilistic Analysis</h2>
-        <div class="dropdown-icon" id="dropdownIcon">▼</div>
-      </div>
-      <div class="dropdown-content" id="dropdownContent">
-        <div class="dropdown-inner">
-          <p class="dropdown-description">
-            Unlock advanced AI-powered analysis tools inspired by the Probabilistic framework. Model variables, calculate optimal trading paths, and get real-time AI insights for smarter decision-making.
-          </p>
-          
-          <div class="tools-grid">
-            <div class="tool-card" onclick="window.open('https://probabilistic.vercel.app', '_blank')">
-              <div class="tool-icon">🎯</div>
-              <h3>Probabilistic Analyzer</h3>
-              <p>Model market variables and analyze optimal trading outcomes with AI-powered probabilistic analysis.</p>
-              <a href="https://probabilistic.vercel.app" target="_blank" class="tool-link">Launch App →</a>
-            </div>
+        <p class="dropdown-description">
+          Unlock advanced AI-powered analysis tools inspired by the Probabilistic framework. Model variables, calculate optimal trading paths, and get real-time AI insights.
+        </p>
+        
+        <div class="ai-tabs-bar">
+          <button class="ai-inner-tab active" onclick="switchAiTab(event, 'all')">All Tools</button>
+          <button class="ai-inner-tab" onclick="switchAiTab(event, 'ai')">AI Analysis</button>
+          <button class="ai-inner-tab" onclick="switchAiTab(event, 'market')">Market Data</button>
+        </div>
+        
+        <div class="tools-grid" id="toolsGrid">
+          <div class="tool-card" data-category="ai" onclick="window.open('https://probabilistic.vercel.app', '_blank')">
+            <div class="tool-icon">🎯</div>
+            <h3>Probabilistic Analyzer</h3>
+            <p>Model market variables and analyze optimal trading outcomes with AI-powered probabilistic analysis.</p>
+            <a href="https://probabilistic.vercel.app" target="_blank" class="tool-link">Launch App →</a>
+          </div>
 
-            <div class="tool-card" onclick="window.open('https://notebooklm.google.com', '_blank')">
-              <div class="tool-icon">📚</div>
-              <h3>NotebookLM Research</h3>
-              <p>Access curated trading whitepapers, ICT strategy documentation, and financial analysis notebooks.</p>
-              <a href="https://notebooklm.google.com" target="_blank" class="tool-link">Explore Knowledge →</a>
-            </div>
+          <div class="tool-card" data-category="ai" onclick="window.open('https://notebooklm.google.com', '_blank')">
+            <div class="tool-icon">📚</div>
+            <h3>NotebookLM Research</h3>
+            <p>Access curated trading whitepapers, ICT strategy documentation, and financial analysis notebooks.</p>
+            <a href="https://notebooklm.google.com" target="_blank" class="tool-link">Explore Knowledge →</a>
+          </div>
 
-            <div class="tool-card" onclick="window.open('https://gemini.google.com', '_blank')">
-              <div class="tool-icon">✨</div>
-              <h3>Gemini AI Assistant</h3>
-              <p>Get real-time AI insights on market trends, trading strategies, and probability calculations.</p>
-              <a href="https://gemini.google.com" target="_blank" class="tool-link">Chat with AI →</a>
-            </div>
+          <div class="tool-card" data-category="ai" onclick="window.open('https://gemini.google.com', '_blank')">
+            <div class="tool-icon">✨</div>
+            <h3>Gemini AI Assistant</h3>
+            <p>Get real-time AI insights on market trends, trading strategies, and probability calculations.</p>
+            <a href="https://gemini.google.com" target="_blank" class="tool-link">Chat with AI →</a>
+          </div>
 
-            <div class="tool-card" onclick="window.open('https://www.tradingview.com', '_blank')">
-              <div class="tool-icon">📈</div>
-              <h3>TradingView Integration</h3>
-              <p>Sync with real-time market data, advanced charting, and professional trading tools.</p>
-              <a href="https://www.tradingview.com" target="_blank" class="tool-link">Access Market Data →</a>
-            </div>
+          <div class="tool-card" data-category="market" onclick="window.open('https://www.tradingview.com', '_blank')">
+            <div class="tool-icon">📈</div>
+            <h3>TradingView Integration</h3>
+            <p>Sync with real-time market data, advanced charting, and professional trading tools.</p>
+            <a href="https://www.tradingview.com" target="_blank" class="tool-link">Access Market Data →</a>
+          </div>
 
-            <div class="tool-card" onclick="window.open('https://www.forexfactory.com/calendar', '_blank')">
-              <div class="tool-icon">📅</div>
-              <h3>Economic Calendar</h3>
-              <p>Track major economic events and their probabilistic impact on currency markets.</p>
-              <a href="https://www.forexfactory.com/calendar" target="_blank" class="tool-link">View Calendar →</a>
-            </div>
+          <div class="tool-card" data-category="market" onclick="window.open('https://www.forexfactory.com/calendar', '_blank')">
+            <div class="tool-icon">📅</div>
+            <h3>Economic Calendar</h3>
+            <p>Track major economic events and their probabilistic impact on currency markets.</p>
+            <a href="https://www.forexfactory.com/calendar" target="_blank" class="tool-link">View Calendar →</a>
+          </div>
 
-            <div class="tool-card" onclick="window.open('https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html', '_blank')">
-              <div class="tool-icon">🏦</div>
-              <h3>Fed Rates Watch</h3>
-              <p>Monitor interest rate probabilities and policy decision outcomes in real-time.</p>
-              <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="tool-link">Track Rates →</a>
-            </div>
+          <div class="tool-card" data-category="market" onclick="window.open('https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html', '_blank')">
+            <div class="tool-icon">🏦</div>
+            <h3>Fed Rates Watch</h3>
+            <p>Monitor interest rate probabilities and policy decision outcomes in real-time.</p>
+            <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="tool-link">Track Rates →</a>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <footer role="contentinfo">
     <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education Powered by Probabilistic AI Analysis</p>
   </footer>
 
- <script>
-    // Dropdown Toggle
-    function toggleDropdown(event) {
-      const header = event.currentTarget;
-      const content = document.getElementById('dropdownContent');
-      const icon = document.getElementById('dropdownIcon');
+  <script>
+    // Smooth Inner Tab Switching Logic
+    function switchAiTab(event, category) {
+      // Update active tab highlight classes
+      const tabs = document.querySelectorAll('.ai-inner-tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      const cards = document.querySelectorAll('.tool-card');
       
-      content.classList.toggle('open');
-      icon.classList.toggle('open');
+      cards.forEach(card => {
+        // Trigger exit micro-animation
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95) translateY(5px)';
+        
+        setTimeout(() => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.classList.remove('hidden');
+            // Re-render smooth entry layout metrics
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1) translateY(0)';
+            }, 50);
+          } else {
+            card.classList.add('hidden');
+          }
+        }, 200); // Wait for fade-out transformation before toggling display state
+      });
     }
 
     const canvas = document.getElementById('globalCanvas');
@@ -431,12 +541,11 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Maps target coordinates directly inside the live UI chart-display-container
     function getCandlestickTargets() {
       const anchor = document.getElementById('chartAnchor');
+      if (!anchor) return [];
       const rect = anchor.getBoundingClientRect();
       
-      // Calculate coordinates relative to screen views matching current bounding box limits
       const centerX = rect.left + (rect.width / 2);
       const centerY = rect.top + (rect.height / 2);
       const spacing = Math.min(rect.width * 0.22, 160);
@@ -523,6 +632,7 @@
     function buildGlobalParticleMatrix() {
       particleCloud = [];
       const targets = getCandlestickTargets();
+      if (targets.length === 0) return;
       
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
@@ -578,7 +688,6 @@
 
       let elapsedSincePhase = (timestamp - phaseStartTime) / 1000;
 
-      // AUTOMATED TIMELINE STAGES
       if (currentPhase === 'helix' && globalElapsed > 2.2) { 
         currentPhase = 'disintegrate';
         phaseStartTime = timestamp;
@@ -586,7 +695,6 @@
       else if (currentPhase === 'disintegrate' && elapsedSincePhase >= 1.4) { 
         currentPhase = 'morph';
         phaseStartTime = timestamp;
-        // Re-calculate live container placement parameters just as morph sequence begins
         buildGlobalParticleMatrix();
       } 
       else if (currentPhase === 'morph' && elapsedSincePhase >= 0.6) { 
@@ -616,7 +724,6 @@
             particleCloud[index++].startX = centerX + Math.cos(angle) * 95;
             particleCloud[index-1].startY = spineY;
           }
-
           if (particleCloud[index]) {
             particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 95;
             particleCloud[index-1].startY = spineY;
@@ -673,7 +780,6 @@
       });
     }
 
-    // Initialize cloud matrix on load so first phase runs smoothly
     buildGlobalParticleMatrix();
     requestAnimationFrame(globalLoopEngine);
 
