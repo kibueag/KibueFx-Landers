@@ -10,91 +10,202 @@
             margin: 0;
             padding: 0;
         }
+
+        :root {
+          --border-radius: 20px;
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 1rem;
             position: relative;
         }
+
+        /* Navigation Tabs */
+        .nav-container {
+          width: 100%;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          padding: 1rem 0;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          top: 0;
+          z-index: 2000;
+          border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .nav-tabs {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 1rem;
+        }
+
+        .nav-tab {
+          padding: 0.8rem 1.5rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: var(--transition);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+          text-decoration: none;
+          display: inline-block;
+        }
+
+        .nav-tab:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+          background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .nav-tab.active {
+          background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+          box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
         .fullscreen-gif {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(44, 62, 80, 0.5)), url('waru.gif');
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(44, 62, 80, 0.3)), url('waru.gif');
             background-size: cover;
             background-position: center;
             z-index: -1;
         }
-        .form-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            max-width: 400px;
-            width: 90%;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+
+        .content-wrapper {
+            display: flex;
+            gap: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 100px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
         }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         h2 {
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: #667eea;
+            font-weight: 700;
         }
+
         label {
             display: block;
-            margin: 0.8rem 0 0.4rem;
-            font-weight: bold;
+            margin: 1rem 0 0.5rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
         }
+
         input {
             width: 100%;
-            padding: 0.8rem;
+            padding: 1rem;
             margin-bottom: 1.2rem;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
             font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
         }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
         input::placeholder {
-            color: #ddd;
+            color: #999;
         }
+
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus,
         input:-webkit-autofill:active {
-            box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.15) inset;
-            -webkit-text-fill-color: white !important;
+            box-shadow: 0 0 0 1000px white inset !important;
+            -webkit-text-fill-color: #1a1a1a !important;
             transition: background-color 5000s ease-in-out 0s;
         }
-        input:-moz-autofill {
-            box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.15) inset;
-            color: white !important;
-        }
+
         button {
             width: 100%;
-            padding: 1rem;
-            background: #007bff;
+            padding: 1.1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 50px;
+            font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            margin-top: 1rem;
         }
+
         button:hover:not(:disabled) {
-            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
         button:disabled {
-            opacity: 0.6;
+            opacity: 0.7;
             cursor: not-allowed;
         }
+
         button.loading::after {
             content: '';
             display: inline-block;
@@ -106,74 +217,193 @@
             animation: spin 1s linear infinite;
             margin-left: 10px;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         #statusMessage,
         #loginStatusMessage {
             margin-top: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            animation: slideUp 0.3s ease-out;
         }
+
         .switch-link {
-            color: lightblue;
+            color: #667eea;
             cursor: pointer;
-            text-decoration: underline;
-            user-select: none;
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 2px solid #667eea;
+            transition: var(--transition);
         }
+
         .switch-link:hover {
-            color: #87cefa;
+            color: #764ba2;
+            border-bottom-color: #764ba2;
         }
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 1.2rem;
-                border-radius: 12px;
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .info-section {
+            max-width: 450px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            animation: slideUp 0.6s ease-out 0.2s backwards;
+        }
+
+        .info-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #ffeb3b;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-section li {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .info-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ffeb3b;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                margin-top: 120px;
+                gap: 1rem;
             }
+
+            .form-container,
+            .info-section {
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+
             h2 {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
             }
-            input,
-            button {
+
+            input, button {
                 font-size: 0.95rem;
                 padding: 0.85rem;
+            }
+
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+
+            .nav-tab {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .info-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .info-section li {
+                font-size: 0.9rem;
+                margin: 0.8rem 0;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Tabs -->
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <a href="index.html" class="nav-tab">🏠 Home</a>
+            <a href="gloss.html" class="nav-tab">📚 Glossary</a>
+            <a href="ict_trade_setup.html" class="nav-tab">📊 Trading Setup</a>
+            <a href="notebooklm.html" class="nav-tab">📝 Resources</a>
+            <a href="signup.html" class="nav-tab active">🔐 Join Us</a>
+        </div>
+    </nav>
+
     <div class="fullscreen-gif"></div>
 
-    <div class="form-container">
-        <form id="signupForm" novalidate aria-label="Sign Up Form">
-            <h2>Sign Up for KibueFx Landers</h2>
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Your Name" required autocomplete="name" aria-required="true" />
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" aria-required="true" />
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Your Password" required autocomplete="new-password" aria-required="true" />
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" placeholder="Confirm Password" required aria-required="true" />
-            <button type="submit">Sign Up</button>
-            <p style="text-align: center; margin-top: 10px;">
-                Already have an account? <span class="switch-link" onclick="showLogin()" role="button" tabindex="0">Login</span>
-            </p>
-            <div id="statusMessage" aria-live="polite"></div>
-        </form>
+    <div class="content-wrapper">
+        <div class="form-container">
+            <form id="signupForm" novalidate aria-label="Sign Up Form">
+                <h2>Join KibueFx 🚀</h2>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Your Name" required autocomplete="name" aria-required="true" />
+                
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" aria-required="true" />
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="At least 6 characters" required autocomplete="new-password" aria-required="true" />
+                
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required aria-required="true" />
+                
+                <button type="submit">Create Account</button>
+                
+                <p class="form-footer">
+                    Already have an account? <span class="switch-link" onclick="showLogin()" role="button" tabindex="0">Login here</span>
+                </p>
+                
+                <div id="statusMessage" aria-live="polite"></div>
+            </form>
 
-        <form id="loginForm" style="display: none;" novalidate aria-label="Login Form">
-            <h2>Login to KibueFx Landers</h2>
-            <label for="loginEmail">Email</label>
-            <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email" aria-required="true" />
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="Your Password" required autocomplete="current-password" aria-required="true" />
-            <button type="submit">Login</button>
-            <p style="text-align: center; margin-top: 10px;">
-                Don’t have an account? <span class="switch-link" onclick="showSignup()" role="button" tabindex="0">Sign Up</span>
-            </p>
-            <div id="loginStatusMessage" aria-live="polite"></div>
-        </form>
+            <form id="loginForm" style="display: none;" novalidate aria-label="Login Form">
+                <h2>Welcome Back 👋</h2>
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email" aria-required="true" />
+                
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Your Password" required autocomplete="current-password" aria-required="true" />
+                
+                <button type="submit">Login</button>
+                
+                <p class="form-footer">
+                    Don't have an account? <span class="switch-link" onclick="showSignup()" role="button" tabindex="0">Sign up now</span>
+                </p>
+                
+                <div id="loginStatusMessage" aria-live="polite"></div>
+            </form>
+        </div>
+
+        <div class="info-section">
+            <h3>🎓 What You'll Get:</h3>
+            <ul>
+                <li>Exclusive trading strategies & education</li>
+                <li>Market structure & price action insights</li>
+                <li>Risk management frameworks</li>
+                <li>Live trade examples & breakdowns</li>
+                <li>Access to trading communities</li>
+                <li>Resources for students & researchers</li>
+            </ul>
+        </div>
     </div>
 
     <script>
@@ -216,14 +446,12 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    mode: 'no-cors' // Use no-cors to avoid CORS issues
+                    mode: 'no-cors'
                 });
-                // Since mode is 'no-cors', response cannot be read directly
-                // Assume success if no network error
                 return { result: 'success' };
             } catch (error) {
                 console.error('Fetch error:', error);
-                throw new Error('Network error. Please try logging in or contact support if this persists.');
+                throw new Error('Network error. Please try again or contact support.');
             }
         }
 
@@ -231,7 +459,6 @@
         async function checkRedirect(url) {
             try {
                 const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-                // no-cors returns opaque response, so assume success unless network error
                 return true;
             } catch {
                 return false;
@@ -256,57 +483,64 @@
 
             // Client-side validation
             if (!name || !email || !password || !confirmPassword) {
-                statusMessage.textContent = 'Please fill out all fields.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Please fill out all fields.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
             if (name.length < 2) {
-                statusMessage.textContent = 'Name must be at least 2 characters long.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Name must be at least 2 characters long.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                statusMessage.textContent = 'Invalid email format.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Invalid email format.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
             if (password.length < 6) {
-                statusMessage.textContent = 'Password must be at least 6 characters long.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Password must be at least 6 characters long.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
             if (password !== confirmPassword) {
-                statusMessage.textContent = 'Passwords do not match.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Passwords do not match.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
-            statusMessage.textContent = 'Submitting...';
-            statusMessage.style.color = 'lightgreen';
+            statusMessage.textContent = '⏳ Creating your account...';
+            statusMessage.style.color = '#ffeb3b';
+            statusMessage.style.backgroundColor = 'rgba(255, 235, 59, 0.1)';
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
 
             try {
                 const data = await postForm(scriptURL, { action: 'signup', name, email, password });
-                statusMessage.textContent = 'Signup successful! Redirecting...';
-                statusMessage.style.color = 'lightgreen';
+                statusMessage.textContent = '✅ Account created! Redirecting...';
+                statusMessage.style.color = '#4caf50';
+                statusMessage.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
                 const redirectOk = await checkRedirect('gloss.html');
                 if (redirectOk) {
                     setTimeout(() => {
                         window.location.href = 'gloss.html';
-                    }, 1000);
+                    }, 1500);
                 } else {
-                    statusMessage.textContent = 'Signup successful, but redirect page not found. Try logging in.';
-                    statusMessage.style.color = 'orange';
+                    statusMessage.textContent = '✅ Account created! You can now login.';
                 }
             } catch (error) {
                 console.error('Signup fetch error:', error);
-                statusMessage.textContent = `${error.message} If you already have an account, try logging in.`;
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = `❌ ${error.message}`;
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
@@ -327,39 +561,43 @@
 
             // Client-side validation
             if (!email || !password) {
-                statusMessage.textContent = 'Please fill out all fields.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Please fill out all fields.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                statusMessage.textContent = 'Invalid email format.';
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = '⚠️ Invalid email format.';
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
                 return;
             }
 
-            statusMessage.textContent = 'Checking...';
-            statusMessage.style.color = 'lightgreen';
+            statusMessage.textContent = '⏳ Verifying credentials...';
+            statusMessage.style.color = '#ffeb3b';
+            statusMessage.style.backgroundColor = 'rgba(255, 235, 59, 0.1)';
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
 
             try {
                 const data = await postForm(scriptURL, { action: 'login', email, password });
-                statusMessage.textContent = 'Login successful! Redirecting...';
-                statusMessage.style.color = 'lightgreen';
+                statusMessage.textContent = '✅ Login successful! Redirecting...';
+                statusMessage.style.color = '#4caf50';
+                statusMessage.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
                 const redirectOk = await checkRedirect('gloss.html');
                 if (redirectOk) {
                     setTimeout(() => {
                         window.location.href = 'gloss.html';
-                    }, 1000);
+                    }, 1500);
                 } else {
-                    statusMessage.textContent = 'Login successful, but redirect page not found.';
-                    statusMessage.style.color = 'orange';
+                    statusMessage.textContent = '✅ Login successful!';
                 }
             } catch (error) {
                 console.error('Login fetch error:', error);
-                statusMessage.textContent = `Error logging in: ${error.message}`;
-                statusMessage.style.color = 'red';
+                statusMessage.textContent = `❌ ${error.message}`;
+                statusMessage.style.color = '#ff6b6b';
+                statusMessage.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
