@@ -405,7 +405,7 @@
     <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education Powered by Probabilistic AI Analysis</p>
   </footer>
 
-  <script>
+ <script>
     // Dropdown Toggle
     function toggleDropdown(event) {
       const header = event.currentTarget;
@@ -416,13 +416,6 @@
       icon.classList.toggle('open');
     }
 
-
-    <footer>
-      <p>&copy; 2026 KibueFx Landers. All rights reserved.</p>
-    </footer>
-  </div>
-
-  <script>
     const canvas = document.getElementById('globalCanvas');
     const ctx = canvas.getContext('2d');
     
@@ -619,11 +612,15 @@
           const angle = pct * Math.PI * 5 + rotationAngle;
           const spineY = centerY - (helixHeight / 2) + (pct * helixHeight);
 
-          particleCloud[index++].startX = centerX + Math.cos(angle) * 95;
-          particleCloud[index-1].startY = spineY;
+          if (particleCloud[index]) {
+            particleCloud[index++].startX = centerX + Math.cos(angle) * 95;
+            particleCloud[index-1].startY = spineY;
+          }
 
-          particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 95;
-          particleCloud[index-1].startY = spineY;
+          if (particleCloud[index]) {
+            particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 95;
+            particleCloud[index-1].startY = spineY;
+          }
 
           if (i % 5 === 0) {
             const steps = 7;
@@ -631,8 +628,10 @@
             const xB = centerX + Math.cos(angle + Math.PI) * 95;
             for (let j = 1; j < steps; j++) {
               const stepPct = j / steps;
-              particleCloud[index++].startX = xA + (xB - xA) * stepPct;
-              particleCloud[index-1].startY = spineY;
+              if (particleCloud[index]) {
+                particleCloud[index++].startX = xA + (xB - xA) * stepPct;
+                particleCloud[index-1].startY = spineY;
+              }
             }
           }
         }
@@ -674,6 +673,7 @@
       });
     }
 
+    // Initialize cloud matrix on load so first phase runs smoothly
     buildGlobalParticleMatrix();
     requestAnimationFrame(globalLoopEngine);
 
