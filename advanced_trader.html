@@ -297,7 +297,7 @@
   <div class="content-wrapper" id="mainUI">
     <nav class="nav-container">
       <div class="nav-tabs">
-        <a href="index.htm" class="nav-tab">🏠 Home</a>
+        <a href="index.html" class="nav-tab">🏠 Home</a>
         <a href="gloss.html" class="nav-tab">📚 Glossary</a>
         <a href="ict_trade_setup.html" class="nav-tab">📊 Trading Setup</a>
         <a href="advanced_trader.html" class="nav-tab active">⚡ Advanced Trader</a>
@@ -339,14 +339,82 @@
           </div>
         </div>
       </div>
+    <!-- DROPDOWN: AI-Powered Analysis Tools -->
+    <div class="dropdown-container">
+      <div class="dropdown-header" onclick="toggleDropdown(event)">
+        <h2>🤖 AI-Powered Probabilistic Analysis</h2>
+        <div class="dropdown-icon" id="dropdownIcon">▼</div>
+      </div>
+      <div class="dropdown-content" id="dropdownContent">
+        <div class="dropdown-inner">
+          <p class="dropdown-description">
+            Unlock advanced AI-powered analysis tools inspired by the Probabilistic framework. Model variables, calculate optimal trading paths, and get real-time AI insights for smarter decision-making.
+          </p>
+          
+          <div class="tools-grid">
+            <div class="tool-card" onclick="window.open('https://probabilistic.vercel.app', '_blank')">
+              <div class="tool-icon">🎯</div>
+              <h3>Probabilistic Analyzer</h3>
+              <p>Model market variables and analyze optimal trading outcomes with AI-powered probabilistic analysis.</p>
+              <a href="https://probabilistic.vercel.app" target="_blank" class="tool-link">Launch App →</a>
+            </div>
 
-      <div class="ai-dropdown-panel">
-        <div class="ai-title-wrapper">
-          <span>🤖</span> AI-Powered Probabilistic Analysis
+            <div class="tool-card" onclick="window.open('https://notebooklm.google.com', '_blank')">
+              <div class="tool-icon">📚</div>
+              <h3>NotebookLM Research</h3>
+              <p>Access curated trading whitepapers, ICT strategy documentation, and financial analysis notebooks.</p>
+              <a href="https://notebooklm.google.com" target="_blank" class="tool-link">Explore Knowledge →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://gemini.google.com', '_blank')">
+              <div class="tool-icon">✨</div>
+              <h3>Gemini AI Assistant</h3>
+              <p>Get real-time AI insights on market trends, trading strategies, and probability calculations.</p>
+              <a href="https://gemini.google.com" target="_blank" class="tool-link">Chat with AI →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.tradingview.com', '_blank')">
+              <div class="tool-icon">📈</div>
+              <h3>TradingView Integration</h3>
+              <p>Sync with real-time market data, advanced charting, and professional trading tools.</p>
+              <a href="https://www.tradingview.com" target="_blank" class="tool-link">Access Market Data →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.forexfactory.com/calendar', '_blank')">
+              <div class="tool-icon">📅</div>
+              <h3>Economic Calendar</h3>
+              <p>Track major economic events and their probabilistic impact on currency markets.</p>
+              <a href="https://www.forexfactory.com/calendar" target="_blank" class="tool-link">View Calendar →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html', '_blank')">
+              <div class="tool-icon">🏦</div>
+              <h3>Fed Rates Watch</h3>
+              <p>Monitor interest rate probabilities and policy decision outcomes in real-time.</p>
+              <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="tool-link">Track Rates →</a>
+            </div>
+          </div>
         </div>
-        <div class="arrow-icon"></div>
       </div>
     </div>
+
+  </div>
+
+  <footer role="contentinfo">
+    <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education Powered by Probabilistic AI Analysis</p>
+  </footer>
+
+  <script>
+    // Dropdown Toggle
+    function toggleDropdown(event) {
+      const header = event.currentTarget;
+      const content = document.getElementById('dropdownContent');
+      const icon = document.getElementById('dropdownIcon');
+      
+      content.classList.toggle('open');
+      icon.classList.toggle('open');
+    }
+
 
     <footer>
       <p>&copy; 2026 KibueFx Landers. All rights reserved.</p>
