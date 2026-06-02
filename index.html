@@ -10,7 +10,7 @@
   <meta property="og:url" content="https://kibueag.github.io/KibueFx-Landers/" />
   <meta property="og:site_name" content="KibueFx Landers" />
   <meta property="og:title" content="KibueFx Landers - Cut through the noise. Learn real strategies that work." />
-  <meta property="og:description" content="Discover market structure, price action insights, risk management frameworks, and exclusive access to trading communities. Learn real trading strategies that work." />
+  <meta property="og:description" content="Discover market structure, price action insights, risk management frameworks, and exclusive access to trading communities. Learn real trading strategies." />
   <meta property="og:image" content="https://kibueag.github.io/KibueFx-Landers/g.gif" />
   <meta property="og:image:type" content="image/gif" />
   <meta property="og:image:width" content="600" />
@@ -29,166 +29,358 @@
   
   <title>KibueFx Landers</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #0066ff;
+      --secondary-color: #00bfff;
+      --accent-color: #ff6b6b;
+      --dark-bg: #0f1419;
+      --light-bg: #ffffff;
+      --text-dark: #1a1a1a;
+      --text-light: #ffffff;
+      --border-radius: 20px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #00BFFF; 
-      color: #000000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      background-image: url('Untitled%20design.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 100%;
-      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    /* Navigation Tabs */
+    .nav-container {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .nav-tab {
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-tab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    }
+
     header {
-      padding: 2rem 1rem;
+      padding: 3rem 1rem;
       text-align: center;
       position: relative;
       width: 100%;
       box-sizing: border-box;
     }
+
     header img.logo {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 80px;
+      width: 100px;
       height: auto;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+      animation: float 3s ease-in-out infinite;
     }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
     header h1 {
-      font-size: 2rem;
+      font-size: 3rem;
       margin: 0;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      font-weight: 800;
+      letter-spacing: -1px;
     }
+
     header p {
       margin-top: 1rem;
-      font-size: 1rem;
-      color: #000000;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.95);
+      font-style: italic;
+      font-weight: 300;
     }
+
     .cta {
       margin: 2rem 1rem;
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
+      animation: slideUp 0.6s ease-out;
     }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .cta form {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 0;
     }
+
     .cta input[type="email"] {
-      padding: 0.7rem;
+      padding: 1rem;
       flex: 1;
-      min-width: 200px;
+      min-width: 250px;
       border: none;
-      border-radius: 4px 0 0 4px;
+      border-radius: 50px 0 0 50px;
       outline: none;
       font-size: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
+
+    .cta input[type="email"]:focus {
+      background: white;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
     .cta button {
-      padding: 0.7rem 1rem;
+      padding: 1rem 2rem;
       border: none;
-      background-color: #0000FF;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
       color: white;
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 50px 50px 0;
       cursor: pointer;
       font-size: 1rem;
       font-weight: bold;
-      transition: background-color 0.3s ease;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
     }
+
     .cta button:hover {
-      background-color: #0000CC;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
     }
+
     .cta button:active {
-      background-color: #000099;
+      transform: translateY(0);
     }
+
     .features {
-      max-width: 800px;
+      max-width: 900px;
       text-align: center;
-      padding: 1rem;
+      padding: 3rem 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--border-radius);
+      margin: 2rem 1rem;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
     }
+
     .features h2 {
-      font-size: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+      font-weight: 700;
     }
+
     .features ul {
       list-style: none;
       padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
     }
+
     .features li {
-      margin: 1rem 0;
+      padding: 1.5rem;
       font-size: 1.1rem;
+      background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+      border-radius: 15px;
+      border-left: 4px solid var(--primary-color);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .features li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+      background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
+    }
+
+    .gif {
+      width: 100%;
+      max-width: 700px;
+      padding: 1rem;
+      margin: 2rem 0;
     }
 
     .gif img {
       width: 100%;
-      max-width: 600px;
       height: auto;
+      border-radius: var(--border-radius);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      transition: var(--transition);
     }
+
+    .gif img:hover {
+      transform: scale(1.02);
+    }
+
     .telegram {
       text-align: center;
       padding: 2rem 1rem;
-      font-size: 1rem;
-      color: #000000;
+      font-size: 1.1rem;
+      color: white;
+      max-width: 600px;
     }
+
     .telegram a {
-      color: #000000;
+      color: #ffeb3b;
       text-decoration: none;
       font-weight: bold;
-      border-bottom: 2px solid #0000FF;
-      transition: color 0.3s ease;
-    }
-    .telegram a:hover {
-      color: #0000FF;
-    }
-    .affiliate-widget {
-      text-align: center;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    .affiliate-widget iframe {
+      border-bottom: 3px solid #ffeb3b;
+      transition: var(--transition);
       display: inline-block;
-      max-width: 100%;
-      height: auto;
     }
+
+    .telegram a:hover {
+      color: white;
+      border-bottom-color: white;
+      transform: translateY(-2px);
+    }
+
     footer {
-      margin-top: auto;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
+      margin-top: 3rem;
+      padding: 2rem 1rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
       text-align: center;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
+
     .disclaimer {
       font-size: 0.85rem;
-      line-height: 1.4;
+      line-height: 1.6;
       margin-top: 1rem;
+      opacity: 0.9;
     }
-    @media (max-width: 600px) {
-      header img.logo {
-        width: 60px;
-        top: 0.5rem;
-        right: 0.5rem;
+
+    #message {
+      margin-top: 1rem;
+      color: #ffeb3b;
+      font-weight: bold;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
       }
 
-      header h1 {
-        font-size: 1.6rem;
+      header p {
+        font-size: 1rem;
+      }
+
+      .nav-tabs {
+        gap: 0.5rem;
+      }
+
+      .nav-tab {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
       }
 
       .cta input[type="email"],
       .cta button {
-        border-radius: 4px;
+        border-radius: 12px;
         margin-top: 0.5rem;
-        width: 80%;
+        width: 100%;
       }
 
       .cta form {
         flex-direction: column;
         align-items: center;
       }
+
+      .features {
+        padding: 2rem 1rem;
+      }
+
+      .features h2 {
+        font-size: 1.5rem;
+      }
+
+      .features ul {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Navigation Tabs -->
+  <nav class="nav-container">
+    <div class="nav-tabs">
+      <a href="index.html" class="nav-tab active">🏠 Home</a>
+      <a href="gloss.html" class="nav-tab">📚 Glossary</a>
+      <a href="ict_trade_setup.html" class="nav-tab">📊 Trading Setup</a>
+      <a href="notebooklm.html" class="nav-tab">📝 Resources</a>
+      <a href="signup.html" class="nav-tab">🔐 Join Us</a>
+    </div>
+  </nav>
+
   <header role="banner">
     <img src="KibueFx%20Landers.png" alt="KibueFx Logo" class="logo" aria-label="KibueFx Logo">
     <h1>KibueFx Landers</h1>
@@ -200,52 +392,56 @@
       <input 
         type="email" 
         id="emailInput" 
-        placeholder="Enter your email" 
+        placeholder="Enter your email to get started" 
         required 
         aria-label="Email address for signup"
       />
       <button type="submit" aria-label="Submit email to get started">Get Started</button>
     </form>
-    <p id="message" style="margin-top: 1rem; color: white; font-weight: bold;"></p>
+    <p id="message" style="margin-top: 1rem; font-weight: bold;"></p>
+  </section>
+
+  <section class="features" role="region" aria-label="Features">
+    <h2>Why Join KibueFx?</h2>
+    <ul>
+      <li>📈 Market structure & price action insights</li>
+      <li>💰 Risk management frameworks</li>
+      <li>📊 Live trade examples & breakdowns</li>
+      <li>🎓 Perfect for students & researchers</li>
+      <li>🌍 Access exclusive trading communities</li>
+      <li>🚀 Real-world trading strategies</li>
+    </ul>
+  </section>
+  
+  <section class="gif" role="region" aria-label="Demo video">
+    <img src="g.gif" alt="Live Trading Demo" />
+  </section>
+
+  <section class="telegram" role="region" aria-label="Contact information">
+    <p>🚀 <strong>Join our community for exclusive insights!</strong><br>
+    <a href="https://t.me/confidenttrading" target="_blank" rel="noopener noreferrer" aria-label="Join our Telegram community">Join Telegram Community</a></p>
+    <p style="margin-top: 1.5rem;">📧 <strong>Questions?</strong><br>
+    <a href="mailto:gjoekabz98@gmail.com" aria-label="Email contact" style="color: #ffeb3b; border-bottom: 3px solid #ffeb3b;">Contact Us</a></p>
   </section>
 
   <script>
     document.getElementById("emailForm").addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent reload
+      e.preventDefault();
       const email = document.getElementById("emailInput").value.trim();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (emailRegex.test(email)) {
         window.location.href = `signup.html?email=${encodeURIComponent(email)}`;
       } else {
-        document.getElementById("message").textContent = "Please enter a valid email address.";
+        document.getElementById("message").textContent = "⚠️ Please enter a valid email address.";
+        document.getElementById("message").style.color = "#ff6b6b";
       }
     });
   </script>
 
-  <section class="features" role="region" aria-label="Features">
-    <h2>What You'll Get:</h2>
-    <ul>
-      <li>Market structure and price action insights</li>
-      <li>Risk management frameworks</li>
-      <li>Live trade examples and breakdowns</li>
-      <li>Exclusive access to trading communities</li>
-    </ul>
-  </section>
-  
-  <section class="gif" role="region" aria-label="Demo video">
-    <img src="g.gif" style="width: 100%; max-width: 600px; height: auto;" alt="Live Trading Demo" />
-  </section>
-
-  <section class="telegram" role="region" aria-label="Contact information">
-    <p>For copyrighted book references and exclusive material, join our Telegram group:<br>
-    <a href="https://t.me/confidenttrading" target="_blank" rel="noopener noreferrer" aria-label="Join our Telegram community">Join our Telegram community</a></p>
-    <p>Contact: <a href="mailto:gjoekabz98@gmail.com" aria-label="Email contact">gjoekabz98@gmail.com</a></p>
-    
-   
   <footer role="contentinfo">
-    <p>&copy; 2025 KibueFx Landers. All rights reserved.</p>
-    <p class="disclaimer"><strong>Risk Disclosure:</strong> Margin trading products are complex instruments and come with a high risk of losing money rapidly due to leverage. 84% of retail investor accounts lose money when trading on margin with this provider. You should consider whether you understand how margin trading works and whether you can afford to take the high risk of losing money. Please ensure you fully understand the risks before trading.</p>
+    <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advancing Trading Education Worldwide</p>
+    <p class="disclaimer"><strong>⚠️ Risk Disclosure:</strong> Margin trading products are complex instruments and come with a high risk of losing money rapidly due to leverage. 84% of retail investors lose money. Never trade with funds you cannot afford to lose.</p>
   </footer>
 </body>
 </html>
