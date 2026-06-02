@@ -21,7 +21,7 @@
       position: relative;
     }
 
-    /* 1. FULLSCREEN CANVAS LAYER */
+    /* 1. FULLSCREEN OVERLAY CANVAS ENGINE */
     #globalCanvas {
       position: fixed;
       top: 0;
@@ -29,10 +29,10 @@
       width: 100vw;
       height: 100vh;
       z-index: 1;
-      pointer-events: none; /* Allows clicking elements underneath once active */
+      pointer-events: none; /* Allows interacting with menus once they appear */
     }
 
-    /* 2. THE REST OF THE SITE (HIDDEN BY DEFAULT) */
+    /* 2. MAIN WEBSITE UI LAYER (FADES IN AFTER THE INTRO) */
     .content-wrapper {
       position: relative;
       z-index: 10;
@@ -40,60 +40,61 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      opacity: 0; /* Complete stealth mode at startup */
-      transform: translateY(20px);
-      transition: opacity 1.5s ease-out, transform 1.5s ease-out;
-      pointer-events: none; /* Prevent clicking anything during intro */
+      opacity: 0; /* Hidden at startup */
+      transform: translateY(15px);
+      transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none; /* Blocks navigation clicks during intro sequence */
     }
 
-    /* Class added by JS once the startup animation finishes */
+    /* State triggered via JavaScript at completion milestone */
     .content-wrapper.ui-visible {
       opacity: 1;
       transform: translateY(0);
-      pointer-events: auto; /* Restore full site interactivity */
+      pointer-events: auto;
     }
 
-    /* Navigation Bar Styling matching your UI */
+    /* Navigation Container Frame matching your design system */
     .nav-container {
       width: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 1rem 0;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.2rem 0;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
       position: sticky;
       top: 0;
       z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .nav-tabs {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
       flex-wrap: wrap;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
     }
 
     .nav-tab {
-      padding: 0.8rem 1.5rem;
+      padding: 0.8rem 1.6rem;
       background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 50px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95rem;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .nav-tab:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      transform: translateY(-2px);
     }
 
     .nav-tab.active {
@@ -103,47 +104,56 @@
       box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
     }
 
-    /* Main Interface Elements */
+    /* Text Content Center Alignment */
     .main-content {
       width: 100%;
-      max-width: 1000px;
-      padding: 3rem 1.5rem;
+      max-width: 900px;
+      padding: 4rem 1.5rem;
       text-align: center;
-      margin-top: auto; /* Pushes content down slightly so candles sit perfectly in the center */
+      margin-top: auto;
       margin-bottom: auto;
     }
 
     .main-content h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      font-size: 3.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
     .main-content p {
       color: #94a3b8;
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 0 auto 3rem auto;
-      line-height: 1.6;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
     }
 
     .dashboard-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      padding: 2.5rem;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    }
+
+    .dashboard-card h3 {
+      font-size: 1.4rem;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
     }
 
     footer {
-      padding: 2rem;
+      padding: 2.5rem;
       color: #475569;
       font-size: 0.9rem;
       text-align: center;
       width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
     }
   </style>
 </head>
@@ -168,7 +178,7 @@
       <p>Watch as the DNA helix pattern disintegrates and transforms smoothly into precise candlestick formations. This visualization represents the evolution from raw market data to actionable trading signals.</p>
       
       <div class="dashboard-card">
-        <h3>⚡ Real-Time Algorithmic Stream Ready</h3>
+        <h3>⚡ Algorithmic Data Feed Stream Connected</h3>
       </div>
     </div>
 
@@ -181,7 +191,7 @@
     const canvas = document.getElementById('globalCanvas');
     const ctx = canvas.getContext('2d');
     
-    let currentPhase = 'helix'; // Phases: 'helix' -> 'disintegrate' -> 'morph' -> 'stable'
+    let currentPhase = 'helix'; 
     let phaseStartTime = performance.now();
     let globalElapsed = 0;
     let lastTime = null;
@@ -193,29 +203,29 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Dynamic mapping coordinates to place the 3 candles perfectly in the viewport center
+    // Calculates center targets for the candlesticks dynamically based on viewport dimensions
     function getCandlestickTargets() {
       const w = canvas.width;
       const h = canvas.height;
-      const spacing = Math.min(w * 0.18, 160);
+      const spacing = Math.min(w * 0.16, 150);
       const centerX = w / 2;
-      const centerY = h * 0.45; // Centered vertically where it looks best behind layout elements
+      const centerY = h * 0.48; 
 
       return [
         {
           type: 'bullish',
-          bodyX: centerX - spacing, bodyTop: centerY - h*0.05, bodyBottom: centerY + h*0.15, bodyWidth: 32,
-          wickX: centerX - spacing, wickTop: centerY - h*0.12, wickBottom: centerY + h*0.22
+          bodyX: centerX - spacing, bodyTop: centerY - h*0.04, bodyBottom: centerY + h*0.14, bodyWidth: 34,
+          wickX: centerX - spacing, wickTop: centerY - h*0.11, wickBottom: centerY + h*0.20
         },
         {
           type: 'bearish',
-          bodyX: centerX, bodyTop: centerY - h*0.12, bodyBottom: centerY + h*0.08, bodyWidth: 32,
-          wickX: centerX, wickTop: centerY - h*0.20, wickBottom: centerY + h*0.18
+          bodyX: centerX, bodyTop: centerY - h*0.10, bodyBottom: centerY + h*0.08, bodyWidth: 34,
+          wickX: centerX, wickTop: centerY - h*0.18, wickBottom: centerY + h*0.16
         },
         {
           type: 'bullish',
-          bodyX: centerX + spacing, bodyTop: centerY - h*0.20, bodyBottom: centerY - h*0.02, bodyWidth: 32,
-          wickX: centerX + spacing, wickTop: centerY - h*0.26, wickBottom: centerY + h*0.05
+          bodyX: centerX + spacing, bodyTop: centerY - h*0.18, bodyBottom: centerY - h*0.02, bodyWidth: 34,
+          wickX: centerX + spacing, wickTop: centerY - h*0.24, wickBottom: centerY + h*0.04
         }
       ];
     }
@@ -228,12 +238,11 @@
         this.y = startY;
         this.color = color;
         
-        // Dynamic drift explosion offset
-        this.driftX = (Math.random() - 0.5) * 160;
-        this.driftY = (Math.random() - 0.5) * 100 - 30; 
+        this.driftX = (Math.random() - 0.5) * 180;
+        this.driftY = (Math.random() - 0.5) * 110 - 20; 
         this.targetX = null;
         this.targetY = null;
-        this.size = 1.2 + Math.random() * 2;
+        this.size = 1.2 + Math.random() * 2.2;
       }
 
       assignTarget(tx, ty) {
@@ -251,14 +260,14 @@
           this.y = this.startY;
         } 
         else if (currentPhase === 'disintegrate') {
-          let t = elapsed / 1.5; // Disintegration phase duration (1.5 seconds)
+          let t = elapsed / 1.4; 
           t = Math.max(0, Math.min(1, t));
           const ease = this.easeInOutQuint(t);
           this.x = this.startX + this.driftX * ease;
           this.y = this.startY + this.driftY * ease;
         } 
         else if (currentPhase === 'morph' || currentPhase === 'stable') {
-          let t = elapsed / 1.8; // Convergence morph duration (1.8 seconds)
+          let t = elapsed / 1.6; 
           t = Math.max(0, Math.min(1, t));
           const ease = this.easeInOutQuint(t);
 
@@ -286,7 +295,7 @@
       
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const helixHeight = Math.min(canvas.height * 0.6, 450);
+      const helixHeight = Math.min(canvas.height * 0.55, 420);
       const nodesCount = 180;
 
       for (let i = 0; i < nodesCount; i++) {
@@ -294,10 +303,10 @@
         const angle = pct * Math.PI * 5; 
         const spineY = centerY - (helixHeight / 2) + (pct * helixHeight);
 
-        const xA = centerX + Math.cos(angle) * 90;
+        const xA = centerX + Math.cos(angle) * 95;
         particleCloud.push(new TrackedParticle(xA, spineY, '#00bfff'));
 
-        const xB = centerX + Math.cos(angle + Math.PI) * 90;
+        const xB = centerX + Math.cos(angle + Math.PI) * 95;
         particleCloud.push(new TrackedParticle(xB, spineY, '#667eea'));
 
         if (i % 5 === 0) {
@@ -305,7 +314,7 @@
           for (let j = 1; j < steps; j++) {
             const stepPct = j / steps;
             const stepX = xA + (xB - xA) * stepPct;
-            particleCloud.push(new TrackedParticle(stepX, spineY, 'rgba(255, 107, 107, 0.5)'));
+            particleCloud.push(new TrackedParticle(stepX, spineY, 'rgba(255, 107, 107, 0.45)'));
           }
         }
       }
@@ -318,7 +327,7 @@
           const wickPct = Math.random();
           tx = target.wickX;
           ty = target.wickTop + (target.wickBottom - target.wickTop) * wickPct;
-          p.color = 'rgba(148, 163, 184, 0.8)';
+          p.color = 'rgba(148, 163, 184, 0.75)';
         } else {
           const bPctY = Math.random();
           const bPctX = Math.random() - 0.5;
@@ -338,30 +347,31 @@
 
       let elapsedSincePhase = (timestamp - phaseStartTime) / 1000;
 
-      // AUTOMATED TIMELINE MANAGEMENT (No click needed!)
-      if (currentPhase === 'helix' && globalElapsed > 2.5) { // 1. Spins as helix for 2.5s
+      // AUTOMATED TIMELINE STAGES
+      if (currentPhase === 'helix' && globalElapsed > 2.2) { 
         currentPhase = 'disintegrate';
         phaseStartTime = timestamp;
       } 
-      else if (currentPhase === 'disintegrate' && elapsedSincePhase >= 1.5) { // 2. Breaks apart for 1.5s
+      else if (currentPhase === 'disintegrate' && elapsedSincePhase >= 1.4) { 
         currentPhase = 'morph';
         phaseStartTime = timestamp;
       } 
-      else if (currentPhase === 'morph' && elapsedSincePhase >= 0.8) { // 3. While forming candles, reveal UI!
+      else if (currentPhase === 'morph' && elapsedSincePhase >= 0.6) { 
+        // Trigger site content fade in as candles finish coalescing
         document.getElementById('mainUI').classList.add('ui-visible');
-        if (elapsedSincePhase >= 1.8) {
+        if (elapsedSincePhase >= 1.6) {
           currentPhase = 'stable';
         }
       }
 
-      ctx.fillStyle = 'rgba(11, 15, 20, 0.25)';
+      ctx.fillStyle = 'rgba(11, 15, 20, 0.22)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (currentPhase === 'helix') {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const helixHeight = Math.min(canvas.height * 0.6, 450);
-        const rotationAngle = globalElapsed * 2.5; 
+        const helixHeight = Math.min(canvas.height * 0.55, 420);
+        const rotationAngle = globalElapsed * 2.3; 
 
         let index = 0;
         const nodesCount = 180;
@@ -370,16 +380,16 @@
           const angle = pct * Math.PI * 5 + rotationAngle;
           const spineY = centerY - (helixHeight / 2) + (pct * helixHeight);
 
-          particleCloud[index++].startX = centerX + Math.cos(angle) * 90;
+          particleCloud[index++].startX = centerX + Math.cos(angle) * 95;
           particleCloud[index-1].startY = spineY;
 
-          particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 90;
+          particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 95;
           particleCloud[index-1].startY = spineY;
 
           if (i % 5 === 0) {
             const steps = 7;
-            const xA = centerX + Math.cos(angle) * 90;
-            const xB = centerX + Math.cos(angle + Math.PI) * 90;
+            const xA = centerX + Math.cos(angle) * 95;
+            const xB = centerX + Math.cos(angle + Math.PI) * 95;
             for (let j = 1; j < steps; j++) {
               const stepPct = j / steps;
               particleCloud[index++].startX = xA + (xB - xA) * stepPct;
@@ -402,7 +412,7 @@
     }
 
     function renderSolidCandleSkeletons(elapsed) {
-      let alpha = currentPhase === 'stable' ? 0.8 : (elapsed - 0.5) / 1.3;
+      let alpha = currentPhase === 'stable' ? 0.8 : (elapsed - 0.4) / 1.2;
       alpha = Math.max(0, Math.min(0.8, alpha));
       if (alpha === 0) return;
 
