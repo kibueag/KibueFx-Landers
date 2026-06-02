@@ -3,12 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="KibueFx Advanced Trader - Interactive DNA pattern visualization transforming into live candlestick charts with AI-powered probabilistic analysis." />
-  
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="KibueFx Advanced Trader - DNA Pattern to Candlesticks" />
-  <meta property="og:description" content="Experience the future of trading visualization with our advanced DNA pattern animation and probabilistic outcome analysis." />
-  
   <title>Advanced Trader | KibueFx</title>
   <style>
     * {
@@ -17,46 +11,60 @@
       box-sizing: border-box;
     }
 
-    :root {
-      --primary-color: #0066ff;
-      --secondary-color: #00bfff;
-      --accent-color: #ff6b6b;
-      --dark-bg: #0f1419;
-      --light-bg: #ffffff;
-      --text-dark: #1a1a1a;
-      --text-light: #ffffff;
-      --border-radius: 20px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: var(--text-dark);
+      background-color: #0b0f14;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 1. FULLSCREEN CANVAS LAYER */
+    #globalCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none; /* Allows clicking elements underneath once active */
+    }
+
+    /* 2. THE REST OF THE SITE (HIDDEN BY DEFAULT) */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
+      opacity: 0; /* Complete stealth mode at startup */
+      transform: translateY(20px);
+      transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+      pointer-events: none; /* Prevent clicking anything during intro */
     }
 
-    /* Navigation Tabs */
+    /* Class added by JS once the startup animation finishes */
+    .content-wrapper.ui-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto; /* Restore full site interactivity */
+    }
+
+    /* Navigation Bar Styling matching your UI */
     .nav-container {
       width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       padding: 1rem 0;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       position: sticky;
       top: 0;
       z-index: 1000;
-      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .nav-tabs {
@@ -72,468 +80,160 @@
 
     .nav-tab {
       padding: 0.8rem 1.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 50px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95rem;
-      transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
       text-decoration: none;
-      display: inline-block;
+      transition: all 0.3s ease;
     }
 
     .nav-tab:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
     }
 
     .nav-tab.active {
       background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+      border-color: transparent;
+      color: white;
       box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
     }
 
-    header {
-      padding: 3rem 1rem;
-      text-align: center;
-      position: relative;
+    /* Main Interface Elements */
+    .main-content {
       width: 100%;
-      box-sizing: border-box;
+      max-width: 1000px;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      margin-top: auto; /* Pushes content down slightly so candles sit perfectly in the center */
+      margin-bottom: auto;
     }
 
-    header h1 {
+    .main-content h1 {
       font-size: 3rem;
-      margin: 0;
-      color: white;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    header p {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.95);
-      font-style: italic;
-      font-weight: 300;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    /* DNA Pattern Section */
-    .dna-section {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: var(--border-radius);
-      padding: 3rem 2rem;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-    }
-
-    .dna-section h2 {
-      font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: var(--text-dark);
-      font-weight: 700;
-      text-align: center;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .dna-section p {
-      text-align: center;
+    .main-content p {
+      color: #94a3b8;
       font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 2rem;
+      max-width: 700px;
+      margin: 0 auto 3rem auto;
       line-height: 1.6;
     }
 
-    /* Canvas for DNA Animation */
-    .canvas-container {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      background: #0f1419; /* Switched to a sleek, dark terminal style background to make glow elements contrast nicely */
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.4);
-      margin-bottom: 2rem;
-    }
-
-    canvas {
-      display: block;
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    .canvas-info {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    /* Controls */
-    .controls {
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 0.8rem 2rem;
-      border: none;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: bold;
-      transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, #00bfff 0%, #0066ff 100%);
-      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
-    }
-
-    .btn-secondary:hover {
-      box-shadow: 0 8px 25px rgba(0, 102, 255, 0.5);
-    }
-
-    /* DROPDOWN SECTION STYLES */
-    .dropdown-container {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: var(--border-radius);
-      padding: 0;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-      overflow: hidden;
-    }
-
-    .dropdown-header {
-      padding: 2rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: var(--transition);
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-      border-bottom: 2px solid rgba(102, 126, 234, 0.2);
-    }
-
-    .dropdown-header:hover {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    }
-
-    .dropdown-header h2 {
-      font-size: 2rem;
-      margin: 0;
-      color: var(--text-dark);
-      font-weight: 700;
-    }
-
-    .dropdown-icon {
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: transform 0.3s ease;
-    }
-
-    .dropdown-icon.open {
-      transform: rotate(180deg);
-    }
-
-    .dropdown-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .dropdown-content.open {
-      max-height: 2000px;
-      transition: max-height 0.5s ease;
-    }
-
-    .dropdown-inner {
-      padding: 2rem;
-    }
-
-    /* Tools Grid */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .tool-card {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-      border: 2px solid rgba(102, 126, 234, 0.2);
-      border-radius: 15px;
-      padding: 1.5rem;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(102, 126, 234, 0.5);
-      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    }
-
-    .tool-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .tool-card h3 {
-      font-size: 1.3rem;
-      color: var(--text-dark);
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-    }
-
-    .tool-card p {
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
-    .tool-link {
-      display: inline-block;
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 600;
-      transition: var(--transition);
-      border-bottom: 2px solid transparent;
-    }
-
-    .tool-link:hover {
-      color: #764ba2;
-      border-bottom-color: #667eea;
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     }
 
     footer {
-      margin-top: 3rem;
-      padding: 2rem 1rem;
-      font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.85);
+      padding: 2rem;
+      color: #475569;
+      font-size: 0.9rem;
       text-align: center;
       width: 100%;
-      background: rgba(0, 0, 0, 0.1);
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    @media (max-width: 768px) {
-      header h1 { font-size: 2rem; }
-      header p { font-size: 1rem; }
-      .dna-section h2 { font-size: 1.8rem; }
-      .canvas-container { height: 350px; }
-      .nav-tabs { gap: 0.5rem; }
-      .nav-tab { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
-      button { padding: 0.6rem 1.5rem; font-size: 0.85rem; }
-      .btn-group { flex-direction: column; align-items: center; }
-      .dropdown-header h2 { font-size: 1.5rem; }
-      .tools-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <nav class="nav-container">
-    <div class="nav-tabs">
-      <a href="index.html" class="nav-tab">🏠 Home</a>
-      <a href="gloss.html" class="nav-tab">📚 Glossary</a>
-      <a href="ict_trade_setup.html" class="nav-tab">📊 Trading Setup</a>
-      <a href="advanced_trader.html" class="nav-tab active">⚡ Advanced Trader</a>
-      <a href="notebooklm.html" class="nav-tab">📝 Resources</a>
-      <a href="signup.html" class="nav-tab">🔐 Join Us</a>
-    </div>
-  </nav>
 
-  <header role="banner">
-    <h1>⚡ Advanced Trader</h1>
-    <p><i>Experience the future of trading visualization with DNA-inspired patterns transforming into live candlestick charts.</i></p>
-  </header>
+  <canvas id="globalCanvas"></canvas>
 
-  <div class="container">
-    <section class="dna-section">
-      <h2>DNA Pattern Animation</h2>
+  <div class="content-wrapper" id="mainUI">
+    <nav class="nav-container">
+      <div class="nav-tabs">
+        <a href="index.htm" class="nav-tab">🏠 Home</a>
+        <a href="gloss.html" class="nav-tab">📚 Glossary</a>
+        <a href="ict_trade_setup.html" class="nav-tab">📊 Trading Setup</a>
+        <a href="advanced_trader.html" class="nav-tab active">⚡ Advanced Trader</a>
+        <a href="notebooklm.html" class="nav-tab">📝 Resources</a>
+        <a href="signup.html" class="nav-tab">🔐 Join Us</a>
+      </div>
+    </nav>
+
+    <div class="main-content">
+      <h1>Advanced Trading Environment</h1>
       <p>Watch as the DNA helix pattern disintegrates and transforms smoothly into precise candlestick formations. This visualization represents the evolution from raw market data to actionable trading signals.</p>
       
-      <div class="canvas-container">
-        <canvas id="dnaCanvas"></canvas>
-      </div>
-      
-      <div class="canvas-info">
-        <p>🧬 Click Play to watch the structural shift from sequence to three technical market candles.</p>
-      </div>
-
-      <div class="controls">
-        <button onclick="startDNAAnimation()" class="btn-secondary">▶ Play Animation</button>
-        <button onclick="resetDNAAnimation()">⟲ Reset</button>
-      </div>
-    </section>
-
-    <div class="dropdown-container">
-      <div class="dropdown-header" onclick="toggleDropdown(event)">
-        <h2>🤖 AI-Powered Probabilistic Analysis</h2>
-        <div class="dropdown-icon" id="dropdownIcon">▼</div>
-      </div>
-      <div class="dropdown-content" id="dropdownContent">
-        <div class="dropdown-inner">
-          <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem; line-height: 1.6;">
-            Unlock advanced AI-powered analysis tools inspired by the Probabilistic framework. Model variables, calculate optimal trading paths, and get real-time AI insights for smarter decision-making.
-          </p>
-          
-          <div class="tools-grid">
-            <div class="tool-card" onclick="window.open('https://probabilistic.vercel.app', '_blank')">
-              <div class="tool-icon">🎯</div>
-              <h3>Probabilistic Analyzer</h3>
-              <p>Model market variables and analyze optimal trading outcomes with AI-powered probabilistic analysis.</p>
-              <a href="https://probabilistic.vercel.app" target="_blank" class="tool-link">Launch App →</a>
-            </div>
-
-            <div class="tool-card" onclick="window.open('https://notebooklm.google.com', '_blank')">
-              <div class="tool-icon">📚</div>
-              <h3>NotebookLM Research</h3>
-              <p>Access curated trading whitepapers, ICT strategy documentation, and financial analysis notebooks.</p>
-              <a href="https://notebooklm.google.com" target="_blank" class="tool-link">Explore Knowledge →</a>
-            </div>
-
-            <div class="tool-card" onclick="window.open('https://gemini.google.com', '_blank')">
-              <div class="tool-icon">✨</div>
-              <h3>Gemini AI Assistant</h3>
-              <p>Get real-time AI insights on market trends, trading strategies, and probability calculations.</p>
-              <a href="https://gemini.google.com" target="_blank" class="tool-link">Chat with AI →</a>
-            </div>
-
-            <div class="tool-card" onclick="window.open('https://www.tradingview.com', '_blank')">
-              <div class="tool-icon">📈</div>
-              <h3>TradingView Integration</h3>
-              <p>Sync with real-time market data, advanced charting, and professional trading tools.</p>
-              <a href="https://www.tradingview.com" target="_blank" class="tool-link">Access Market Data →</a>
-            </div>
-
-            <div class="tool-card" onclick="window.open('https://www.forexfactory.com/calendar', '_blank')">
-              <div class="tool-icon">📅</div>
-              <h3>Economic Calendar</h3>
-              <p>Track major economic events and their probabilistic impact on currency markets.</p>
-              <a href="https://www.forexfactory.com/calendar" target="_blank" class="tool-link">View Calendar →</a>
-            </div>
-
-            <div class="tool-card" onclick="window.open('https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html', '_blank')">
-              <div class="tool-icon">🏦</div>
-              <h3>Fed Rates Watch</h3>
-              <p>Monitor interest rate probabilities and policy decision outcomes in real-time.</p>
-              <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="tool-link">Track Rates →</a>
-            </div>
-          </div>
-        </div>
+      <div class="dashboard-card">
+        <h3>⚡ Real-Time Algorithmic Stream Ready</h3>
       </div>
     </div>
+
+    <footer>
+      <p>&copy; 2026 KibueFx Landers. All rights reserved.</p>
+    </footer>
   </div>
 
-  <footer role="contentinfo">
-    <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education Powered by Probabilistic AI Analysis</p>
-  </footer>
-
   <script>
-    function toggleDropdown(event) {
-      const content = document.getElementById('dropdownContent');
-      const icon = document.getElementById('dropdownIcon');
-      content.classList.toggle('open');
-      icon.classList.toggle('open');
-    }
-
-    // --- CANVAS CONFIGURATION & ANIMATION ENGINE ---
-    const canvas = document.getElementById('dnaCanvas');
+    const canvas = document.getElementById('globalCanvas');
     const ctx = canvas.getContext('2d');
-    let animationId = null;
-    let isAnimating = false;
-    let startTime = null;
+    
+    let currentPhase = 'helix'; // Phases: 'helix' -> 'disintegrate' -> 'morph' -> 'stable'
+    let phaseStartTime = performance.now();
+    let globalElapsed = 0;
+    let lastTime = null;
 
     function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Structural Target Definitions for the 3 Candlesticks
-    // Calculated dynamically to center nicely on the canvas window
+    // Dynamic mapping coordinates to place the 3 candles perfectly in the viewport center
     function getCandlestickTargets() {
       const w = canvas.width;
       const h = canvas.height;
-      const spacing = Math.min(w * 0.15, 120);
+      const spacing = Math.min(w * 0.18, 160);
       const centerX = w / 2;
+      const centerY = h * 0.45; // Centered vertically where it looks best behind layout elements
 
       return [
         {
-          // Candle 1: Bullish
           type: 'bullish',
-          bodyX: centerX - spacing, bodyTop: h * 0.4, bodyBottom: h * 0.65, bodyWidth: 28,
-          wickX: centerX - spacing, wickTop: h * 0.25, wickBottom: h * 0.75
+          bodyX: centerX - spacing, bodyTop: centerY - h*0.05, bodyBottom: centerY + h*0.15, bodyWidth: 32,
+          wickX: centerX - spacing, wickTop: centerY - h*0.12, wickBottom: centerY + h*0.22
         },
         {
-          // Candle 2: Bearish
           type: 'bearish',
-          bodyX: centerX, bodyTop: h * 0.3, bodyBottom: h * 0.55, bodyWidth: 28,
-          wickX: centerX, wickTop: h * 0.15, wickBottom: h * 0.7
+          bodyX: centerX, bodyTop: centerY - h*0.12, bodyBottom: centerY + h*0.08, bodyWidth: 32,
+          wickX: centerX, wickTop: centerY - h*0.20, wickBottom: centerY + h*0.18
         },
         {
-          // Candle 3: Bullish
           type: 'bullish',
-          bodyX: centerX + spacing, bodyTop: h * 0.2, bodyBottom: h * 0.45, bodyWidth: 28,
-          wickX: centerX + spacing, wickTop: h * 0.1, wickBottom: h * 0.6
+          bodyX: centerX + spacing, bodyTop: centerY - h*0.20, bodyBottom: centerY - h*0.02, bodyWidth: 32,
+          wickX: centerX + spacing, wickTop: centerY - h*0.26, wickBottom: centerY + h*0.05
         }
       ];
     }
 
-    // Particle Object containing internal physics for transformation mechanics
     class TrackedParticle {
-      constructor(startX, startY, color, originalStrand) {
+      constructor(startX, startY, color) {
         this.startX = startX;
         this.startY = startY;
         this.x = startX;
         this.y = startY;
         this.color = color;
-        this.originalStrand = originalStrand; // 1 or 2 (DNA strands) or 0 (bridges)
         
-        // Randomization factors for natural drifting during the disintegration phase
-        this.driftSeedX = (Math.random() - 0.5) * 60;
-        this.driftSeedY = (Math.random() - 0.5) * 40;
-        
+        // Dynamic drift explosion offset
+        this.driftX = (Math.random() - 0.5) * 160;
+        this.driftY = (Math.random() - 0.5) * 100 - 30; 
         this.targetX = null;
         this.targetY = null;
-        this.size = 1.5 + Math.random() * 2;
+        this.size = 1.2 + Math.random() * 2;
       }
 
       assignTarget(tx, ty) {
@@ -541,39 +241,32 @@
         this.targetY = ty;
       }
 
-      // Smooth custom easing interpolation function
       easeInOutQuint(t) {
         return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
       }
 
-      update(progress, state) {
-        if (state === 'helix') {
-          // Keep internal tracking tied exactly to initial structures
+      update(elapsed) {
+        if (currentPhase === 'helix') {
           this.x = this.startX;
           this.y = this.startY;
         } 
-        else if (state === 'disintegrate') {
-          // Calculate drift curve values based on progressive decay steps
-          let t = (progress - 0.25) / 0.35; // map tracking range normalization
+        else if (currentPhase === 'disintegrate') {
+          let t = elapsed / 1.5; // Disintegration phase duration (1.5 seconds)
           t = Math.max(0, Math.min(1, t));
           const ease = this.easeInOutQuint(t);
-
-          // Blend position out towards drift trajectory vector maps
-          this.x = this.startX + this.driftSeedX * ease;
-          this.y = this.startY + this.driftSeedY * ease + (ease * 15); // subtle gravity drag
+          this.x = this.startX + this.driftX * ease;
+          this.y = this.startY + this.driftY * ease;
         } 
-        else if (state === 'morph') {
-          // Snap tracking interpolation directly down targets
-          let t = (progress - 0.60) / 0.40; // normalizes remaining duration window frames
+        else if (currentPhase === 'morph' || currentPhase === 'stable') {
+          let t = elapsed / 1.8; // Convergence morph duration (1.8 seconds)
           t = Math.max(0, Math.min(1, t));
           const ease = this.easeInOutQuint(t);
 
-          const midDriftX = this.startX + this.driftSeedX;
-          const midDriftY = this.startY + this.driftSeedY + 15;
+          const midX = this.startX + this.driftX;
+          const midY = this.startY + this.driftY;
 
-          // Multi-point cubic routing approximation mechanics
-          this.x = (1 - ease) * midDriftX + ease * this.targetX;
-          this.y = (1 - ease) * midDriftY + ease * this.targetY;
+          this.x = (1 - ease) * midX + ease * this.targetX;
+          this.y = (1 - ease) * midY + ease * this.targetY;
         }
       }
 
@@ -587,202 +280,157 @@
 
     let particleCloud = [];
 
-    function initializeParticleMap() {
+    function buildGlobalParticleMatrix() {
       particleCloud = [];
       const targets = getCandlestickTargets();
       
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const helixHeight = 260;
-      const nodesCount = 140;
+      const helixHeight = Math.min(canvas.height * 0.6, 450);
+      const nodesCount = 180;
 
-      // Phase 1: Generate Strand Bases for Helix Structure arrays
       for (let i = 0; i < nodesCount; i++) {
         const pct = i / nodesCount;
-        const baseAngle = pct * Math.PI * 4; // Multiple rotations down the vertical spine
+        const angle = pct * Math.PI * 5; 
         const spineY = centerY - (helixHeight / 2) + (pct * helixHeight);
 
-        // Strand A
-        const xA = centerX + Math.cos(baseAngle) * 55;
-        const particleA = new TrackedParticle(xA, spineY, '#00bfff', 1);
-        particleCloud.push(particleA);
+        const xA = centerX + Math.cos(angle) * 90;
+        particleCloud.push(new TrackedParticle(xA, spineY, '#00bfff'));
 
-        // Strand B
-        const xB = centerX + Math.cos(baseAngle + Math.PI) * 55;
-        const particleB = new TrackedParticle(xB, spineY, '#667eea', 2);
-        particleCloud.push(particleB);
+        const xB = centerX + Math.cos(angle + Math.PI) * 90;
+        particleCloud.push(new TrackedParticle(xB, spineY, '#667eea'));
 
-        // Map connector ladder steps crossing sequence spaces
-        if (i % 6 === 0) {
-          const steps = 6;
+        if (i % 5 === 0) {
+          const steps = 7;
           for (let j = 1; j < steps; j++) {
             const stepPct = j / steps;
             const stepX = xA + (xB - xA) * stepPct;
-            const particleBridge = new TrackedParticle(stepX, spineY, 'rgba(255, 107, 107, 0.6)', 0);
-            particleCloud.push(particleBridge);
+            particleCloud.push(new TrackedParticle(stepX, spineY, 'rgba(255, 107, 107, 0.5)'));
           }
         }
       }
 
-      // Phase 2: Map structural surface distribution arrays targeting candlestick locations
       particleCloud.forEach((p, index) => {
-        // Distribute uniformly across 3 output data blocks
-        const candleIndex = index % 3;
-        const target = targets[candleIndex];
-
+        const target = targets[index % 3];
         let tx, ty;
-        // Divide particles between wick lines and body mass geometry layouts
-        if (index % 5 === 0) {
-          // Structural layout points running down candle wicks
+
+        if (index % 6 === 0) {
           const wickPct = Math.random();
           tx = target.wickX;
           ty = target.wickTop + (target.wickBottom - target.wickTop) * wickPct;
-          // Soft tracking tint variation matching target state definitions
-          p.color = '#999999';
+          p.color = 'rgba(148, 163, 184, 0.8)';
         } else {
-          // Uniform mapping blocks scaling cross section bodies
-          const bodyPctY = Math.random();
-          const bodyPctX = Math.random() - 0.5;
-          tx = target.bodyX + (target.bodyWidth * bodyPctX);
-          ty = target.bodyTop + (target.bodyBottom - target.bodyTop) * bodyPctY;
-          
-          // Apply classic premium charting styles matching functional analysis systems
-          p.color = target.type === 'bullish' ? '#00c853' : '#ff3d00';
+          const bPctY = Math.random();
+          const bPctX = Math.random() - 0.5;
+          tx = target.bodyX + (target.bodyWidth * bPctX);
+          ty = target.bodyTop + (target.bodyBottom - target.bodyTop) * bPctY;
+          p.color = target.type === 'bullish' ? '#00e676' : '#ff3d00';
         }
         p.assignTarget(tx, ty);
       });
     }
 
-    // Core Animation Control Tick Loop Handler
-    function runAnimationEngine(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = (timestamp - startTime) / 1000; // Track precise execution metrics in seconds
-      const totalDuration = 4.2; // Optimized cinematic runtime cadence window
-      let progress = elapsed / totalDuration;
+    function globalLoopEngine(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const delta = (timestamp - lastTime) / 1000;
+      globalElapsed += delta;
+      lastTime = timestamp;
 
-      if (progress > 1) progress = 1; // Limit ceiling thresholds
+      let elapsedSincePhase = (timestamp - phaseStartTime) / 1000;
 
-      // Handle structural processing stage gates
-      let currentState = 'helix';
-      if (progress >= 0.25 && progress < 0.60) {
-        currentState = 'disintegrate';
-      } else if (progress >= 0.60) {
-        currentState = 'morph';
+      // AUTOMATED TIMELINE MANAGEMENT (No click needed!)
+      if (currentPhase === 'helix' && globalElapsed > 2.5) { // 1. Spins as helix for 2.5s
+        currentPhase = 'disintegrate';
+        phaseStartTime = timestamp;
+      } 
+      else if (currentPhase === 'disintegrate' && elapsedSincePhase >= 1.5) { // 2. Breaks apart for 1.5s
+        currentPhase = 'morph';
+        phaseStartTime = timestamp;
+      } 
+      else if (currentPhase === 'morph' && elapsedSincePhase >= 0.8) { // 3. While forming candles, reveal UI!
+        document.getElementById('mainUI').classList.add('ui-visible');
+        if (elapsedSincePhase >= 1.8) {
+          currentPhase = 'stable';
+        }
       }
 
-      // Render execution frames
-      ctx.fillStyle = 'rgba(15, 20, 25, 0.25)'; // Smooth trails decay persistence matrix
+      ctx.fillStyle = 'rgba(11, 15, 20, 0.25)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Dynamically adjust initial coordinate arrays if helix is rotating during Phase 1
-      if (currentState === 'helix' || currentState === 'disintegrate') {
-        const rotationSpeed = 2.2; 
-        const currentRotation = elapsed * rotationSpeed;
+      if (currentPhase === 'helix') {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const helixHeight = 260;
-        
-        let helixIndex = 0;
-        const nodesCount = 140;
+        const helixHeight = Math.min(canvas.height * 0.6, 450);
+        const rotationAngle = globalElapsed * 2.5; 
 
+        let index = 0;
+        const nodesCount = 180;
         for (let i = 0; i < nodesCount; i++) {
           const pct = i / nodesCount;
-          const baseAngle = pct * Math.PI * 4 + currentRotation;
+          const angle = pct * Math.PI * 5 + rotationAngle;
           const spineY = centerY - (helixHeight / 2) + (pct * helixHeight);
 
-          // Update root coordinate structures dynamically
-          particleCloud[helixIndex++].startX = centerX + Math.cos(baseAngle) * 55;
-          particleCloud[helixIndex-1].startY = spineY;
+          particleCloud[index++].startX = centerX + Math.cos(angle) * 90;
+          particleCloud[index-1].startY = spineY;
 
-          particleCloud[helixIndex++].startX = centerX + Math.cos(baseAngle + Math.PI) * 55;
-          particleCloud[helixIndex-1].startY = spineY;
+          particleCloud[index++].startX = centerX + Math.cos(angle + Math.PI) * 90;
+          particleCloud[index-1].startY = spineY;
 
-          if (i % 6 === 0) {
-            const steps = 6;
-            const xA = centerX + Math.cos(baseAngle) * 55;
-            const xB = centerX + Math.cos(baseAngle + Math.PI) * 55;
+          if (i % 5 === 0) {
+            const steps = 7;
+            const xA = centerX + Math.cos(angle) * 90;
+            const xB = centerX + Math.cos(angle + Math.PI) * 90;
             for (let j = 1; j < steps; j++) {
               const stepPct = j / steps;
-              particleCloud[helixIndex++].startX = xA + (xB - xA) * stepPct;
-              particleCloud[helixIndex-1].startY = spineY;
+              particleCloud[index++].startX = xA + (xB - xA) * stepPct;
+              particleCloud[index-1].startY = spineY;
             }
           }
         }
       }
 
-      // Execution step handling cloud array parameters
       particleCloud.forEach(p => {
-        p.update(progress, currentState);
+        p.update(elapsedSincePhase);
         p.draw();
       });
 
-      // Extra polish overlays: Once the morphing target reaches terminal convergence limits
-      if (currentState === 'morph') {
-        renderSolidCandleSkeletons(progress);
+      if (currentPhase === 'morph' || currentPhase === 'stable') {
+        renderSolidCandleSkeletons(elapsedSincePhase);
       }
 
-      if (progress < 1 && isAnimating) {
-        animationId = requestAnimationFrame(runAnimationEngine);
-      } else {
-        isAnimating = false;
-      }
+      requestAnimationFrame(globalLoopEngine);
     }
 
-    // Fades in clear backing boundaries behind the particle clouds as they settle
-    function renderSolidCandleSkeletons(progress) {
-      const alphaFactor = Math.max(0, (progress - 0.85) / 0.15); // Only trigger near tail end thresholds
-      if (alphaFactor === 0) return;
+    function renderSolidCandleSkeletons(elapsed) {
+      let alpha = currentPhase === 'stable' ? 0.8 : (elapsed - 0.5) / 1.3;
+      alpha = Math.max(0, Math.min(0.8, alpha));
+      if (alpha === 0) return;
 
       const targets = getCandlestickTargets();
       targets.forEach(target => {
-        ctx.strokeStyle = `rgba(153, 153, 153, ${alphaFactor * 0.4})`;
-        ctx.lineWidth = 2;
-        
-        // Draw crisp wick indicators matching technical chart systems
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.15})`;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(target.wickX, target.wickTop);
         ctx.lineTo(target.wickX, target.wickBottom);
         ctx.stroke();
 
-        // Draw solid structural content fills inside boundary dimensions
-        ctx.fillStyle = target.type === 'bullish' ? `rgba(0, 200, 83, ${alphaFactor * 0.2})` : `rgba(255, 61, 0, ${alphaFactor * 0.2})`;
-        ctx.strokeStyle = target.type === 'bullish' ? `rgba(0, 200, 83, ${alphaFactor * 0.8})` : `rgba(255, 61, 0, ${alphaFactor * 0.8})`;
-        ctx.lineWidth = 1;
+        ctx.fillStyle = target.type === 'bullish' ? `rgba(0, 230, 118, ${alpha * 0.12})` : `rgba(255, 61, 0, ${alpha * 0.12})`;
+        ctx.strokeStyle = target.type === 'bullish' ? `rgba(0, 230, 118, ${alpha * 0.5})` : `rgba(255, 61, 0, ${alpha * 0.5})`;
         
-        const rectX = target.bodyX - target.bodyWidth / 2;
-        const rectY = target.bodyTop;
-        const rectW = target.bodyWidth;
-        const rectH = target.bodyBottom - target.bodyTop;
-
-        ctx.fillRect(rectX, rectY, rectW, rectH);
-        ctx.strokeRect(rectX, rectY, rectW, rectH);
+        const rx = target.bodyX - target.bodyWidth / 2;
+        const rh = target.bodyBottom - target.bodyTop;
+        ctx.fillRect(rx, target.bodyTop, target.bodyWidth, rh);
+        ctx.strokeRect(rx, target.bodyTop, target.bodyWidth, rh);
       });
     }
 
-    // Static display rendering handling pristine setup states instantly prior to action commands
-    function drawIdleHelixState() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      initializeParticleMap();
-      particleCloud.forEach(p => p.draw());
-    }
+    buildGlobalParticleMatrix();
+    requestAnimationFrame(globalLoopEngine);
 
-    function startDNAAnimation() {
-      if (isAnimating) return;
-      resetDNAAnimation();
-      isAnimating = true;
-      startTime = null;
-      animationId = requestAnimationFrame(runAnimationEngine);
-    }
-
-    function resetDNAAnimation() {
-      if (animationId) cancelAnimationFrame(animationId);
-      isAnimating = false;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawIdleHelixState();
-    }
-
-    // Render original idle baseline presentation sequences instantly upon interface parsing
-    setTimeout(drawIdleHelixState, 100);
+    window.addEventListener('resize', () => {
+      buildGlobalParticleMatrix();
+    });
   </script>
 </body>
 </html>
