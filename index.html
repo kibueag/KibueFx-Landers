@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KibueFx Landers - Learn real trading strategies that work. Market structure, price action insights, and risk management frameworks." />
   <title>KibueFx Landers</title>
   <style>
     body {
@@ -16,7 +17,7 @@
       min-height: 100vh;
       background-image: url('Untitled%20design.png');
       background-repeat: no-repeat;
-      background-position: fill;
+      background-position: center;
       background-size: 100%;
       background-attachment: fixed;
     }
@@ -60,6 +61,7 @@
       border: none;
       border-radius: 4px 0 0 4px;
       outline: none;
+      font-size: 1rem;
     }
     .cta button {
       padding: 0.7rem 1rem;
@@ -68,6 +70,15 @@
       color: white;
       border-radius: 0 4px 4px 0;
       cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .cta button:hover {
+      background-color: #0000CC;
+    }
+    .cta button:active {
+      background-color: #000099;
     }
     .features {
       max-width: 800px;
@@ -90,7 +101,6 @@
       width: 100%;
       max-width: 600px;
       height: auto;
-      
     }
     .telegram {
       text-align: center;
@@ -99,69 +109,88 @@
       color: #000000;
     }
     .telegram a {
-      color: #0000000;
+      color: #000000;
       text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px solid #0000FF;
+      transition: color 0.3s ease;
+    }
+    .telegram a:hover {
+      color: #0000FF;
     }
     footer {
       margin-top: auto;
       padding: 1rem;
       font-size: 0.9rem;
       color: #555;
-      test-align: center;
+      text-align: center;
+    }
+    .disclaimer {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-top: 1rem;
     }
     @media (max-width: 600px) {
-  header img.logo {
-    width: 60px;
-    top: 0.5rem;
-    right: 0.5rem;
-  }
+      header img.logo {
+        width: 60px;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
 
-  header h1 {
-    font-size: 1.6rem;
-  }
+      header h1 {
+        font-size: 1.6rem;
+      }
 
-  .cta input[type="email"],
-  .cta button {
-    border-radius: 4px;
-    margin-top: 0.5rem;
-    width: 80%;
-  }
+      .cta input[type="email"],
+      .cta button {
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        width: 80%;
+      }
 
-  .cta form {
-    flex-direction: column;
-    align-items: center;
-  }
+      .cta form {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="KibueFx%20Landers.png" alt="KibueFx Logo" class="logo">
+  <header role="banner">
+    <img src="KibueFx%20Landers.png" alt="KibueFx Logo" class="logo" aria-label="KibueFx Logo">
     <h1>KibueFx Landers</h1>
     <p><i>Cut through the noise. Learn real strategies that work.</i></p>
   </header>
 
-<section class="cta">
-  <form id="emailForm">
-    <input type="email" id="emailInput" placeholder="Enter your email" required />
-    <button type="submit">Get Started</button>
-  </form>
-  <p id="message" style="margin-top: 1rem; color: white; font-weight: bold;"></p>
-</section>
+  <section class="cta" role="region" aria-label="Email signup">
+    <form id="emailForm" method="post" novalidate>
+      <input 
+        type="email" 
+        id="emailInput" 
+        placeholder="Enter your email" 
+        required 
+        aria-label="Email address for signup"
+      />
+      <button type="submit" aria-label="Submit email to get started">Get Started</button>
+    </form>
+    <p id="message" style="margin-top: 1rem; color: white; font-weight: bold;"></p>
+  </section>
 
-<script>
-  document.getElementById("emailForm").addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevent reload
-    const email = document.getElementById("emailInput").value.trim();
-    if (email) {
-      window.location.href = `signup.html?email=${encodeURIComponent(email)}`;
-    }
-  });
-</script>
+  <script>
+    document.getElementById("emailForm").addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent reload
+      const email = document.getElementById("emailInput").value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (emailRegex.test(email)) {
+        window.location.href = `signup.html?email=${encodeURIComponent(email)}`;
+      } else {
+        document.getElementById("message").textContent = "Please enter a valid email address.";
+      }
+    });
+  </script>
 
-
-
-  <section class="features">
+  <section class="features" role="region" aria-label="Features">
     <h2>What You'll Get:</h2>
     <ul>
       <li>Market structure and price action insights</li>
@@ -171,21 +200,20 @@
     </ul>
   </section>
   
-  <section class="gif">
-    <img src="g.gif" style="width: 100%; max-width: 600px; height: auto;" alt="Live GIF" />
+  <section class="gif" role="region" aria-label="Demo video">
+    <img src="g.gif" style="width: 100%; max-width: 600px; height: auto;" alt="Live Trading Demo" />
   </section>
 
-  <section class="telegram">
+  <section class="telegram" role="region" aria-label="Contact information">
     <p>For copyrighted book references and exclusive material, join our Telegram group:<br>
-    <a href="https://t.me/confidenttrading" target="_blank">t.me/confidenttrading</a></p>
-    <p>Contact: gjoekabz98@gmail.com</p>
-    <iframe src="https://images.pipaffiliates.com/f/b?g=1013&amp;c=534435" width="300" height="250" referrerpolicy="no-referrer-when-downgrade" style="border: 0px;"></iframe>
+    <a href="https://t.me/confidenttrading" target="_blank" rel="noopener noreferrer" aria-label="Join our Telegram community">Join our Telegram community</a></p>
+    <p>Contact: <a href="mailto:gjoekabz98@gmail.com" aria-label="Email contact">gjoekabz98@gmail.com</a></p>
+    <iframe src="https://images.pipaffiliates.com/f/b?g=1013&amp;c=534435" width="300" height="250" referrerpolicy="no-referrer-when-downgrade" style="border: 0px;" title="Affiliate widget"></iframe>
   </section>
 
-  <footer>
-    &copy; 2025 KibueFx Landers. All rights reserved. 
-    
-     Margin trading products are complex instruments and come with a high risk of losing money rapidly due to leverage. 84% of retail investor accounts lose money when trading on margin with this provider. You should consider whether you understand how margin trading works and whether you can afford to take the high risk of losing your money.
+  <footer role="contentinfo">
+    <p>&copy; 2025 KibueFx Landers. All rights reserved.</p>
+    <p class="disclaimer"><strong>Risk Disclosure:</strong> Margin trading products are complex instruments and come with a high risk of losing money rapidly due to leverage. 84% of retail investor accounts lose money when trading on margin with this provider. You should consider whether you understand how margin trading works and whether you can afford to take the high risk of losing money. Please ensure you fully understand the risks before trading.</p>
   </footer>
 </body>
 </html>
