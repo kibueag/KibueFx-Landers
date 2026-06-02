@@ -380,6 +380,58 @@
       border-top: 1px solid rgba(255, 255, 255, 0.03);
       margin-top: auto;
     }
+    /* Unique Styles for the Add Candle Button */
+.btn-add-candle {
+  position: relative;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle glowing accent behind the button on hover */
+.btn-add-candle:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 
+              0 6px 20px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.25);
+  filter: brightness(1.1);
+}
+
+/* Tactile "pressed down" feeling when clicked */
+.btn-add-candle:active {
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.2), 
+              0 3px 10px rgba(0, 0, 0, 0.3);
+  filter: brightness(0.95);
+}
+
+/* Clean ripple overlay indicator on click/focus */
+.btn-add-candle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.btn-add-candle:active::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Focus rings for clean keyboard accessibility navigation */
+.btn-add-candle:focus-visible {
+  outline: 2px solid #ff8e53;
+  outline-offset: 3px;
+}
   </style>
 </head>
 <body>
@@ -410,7 +462,7 @@
         <div class="chart-actions">
           <button class="btn-action btn-purple">🔄 Generate New Data</button>
           <button class="btn-action btn-blue">🔀 Toggle Pattern</button>
-          <button class="btn-action btn-purple">➕ Add Candle</button>
+          <button class="btn-action btn-purple btn-add-candle">➕ Add Candle</button>
         </div>
 
         <div class="metrics-grid">
