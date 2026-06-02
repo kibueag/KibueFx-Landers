@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="KibueFx Advanced Trader - Interactive DNA pattern visualization transforming into live candlestick charts." />
+  <meta name="description" content="KibueFx Advanced Trader - Interactive DNA pattern visualization transforming into live candlestick charts with AI-powered probabilistic analysis." />
   
   <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="KibueFx Advanced Trader - DNA Pattern to Candlesticks" />
-  <meta property="og:description" content="Experience the future of trading visualization with our advanced DNA pattern animation." />
+  <meta property="og:description" content="Experience the future of trading visualization with our advanced DNA pattern animation and probabilistic outcome analysis." />
   
   <title>Advanced Trader | KibueFx</title>
   <style>
@@ -239,6 +239,17 @@
       }
     }
 
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .candlestick-body {
       width: 24px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -364,6 +375,132 @@
       color: #ff6b6b;
     }
 
+    /* DROPDOWN SECTION STYLES */
+    .dropdown-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--border-radius);
+      padding: 0;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .dropdown-header {
+      padding: 2rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .dropdown-header:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    }
+
+    .dropdown-header h2 {
+      font-size: 2rem;
+      margin: 0;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .dropdown-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-icon.open {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .dropdown-content.open {
+      max-height: 2000px;
+      transition: max-height 0.5s ease;
+    }
+
+    .dropdown-inner {
+      padding: 2rem;
+      animation: slideDown 0.4s ease-out;
+    }
+
+    .dropdown-description {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* Tools Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tool-card {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(102, 126, 234, 0.5);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    }
+
+    .tool-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tool-card h3 {
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .tool-card p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .tool-link {
+      display: inline-block;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border-bottom: 2px solid transparent;
+    }
+
+    .tool-link:hover {
+      color: #764ba2;
+      border-bottom-color: #667eea;
+    }
+
     footer {
       margin-top: 3rem;
       padding: 2rem 1rem;
@@ -417,6 +554,14 @@
       }
 
       .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .dropdown-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .tools-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -495,13 +640,83 @@
         </div>
       </div>
     </section>
+
+    <!-- DROPDOWN: AI-Powered Analysis Tools -->
+    <div class="dropdown-container">
+      <div class="dropdown-header" onclick="toggleDropdown(event)">
+        <h2>🤖 AI-Powered Probabilistic Analysis</h2>
+        <div class="dropdown-icon" id="dropdownIcon">▼</div>
+      </div>
+      <div class="dropdown-content" id="dropdownContent">
+        <div class="dropdown-inner">
+          <p class="dropdown-description">
+            Unlock advanced AI-powered analysis tools inspired by the Probabilistic framework. Model variables, calculate optimal trading paths, and get real-time AI insights for smarter decision-making.
+          </p>
+          
+          <div class="tools-grid">
+            <div class="tool-card" onclick="window.open('https://probabilistic.vercel.app', '_blank')">
+              <div class="tool-icon">🎯</div>
+              <h3>Probabilistic Analyzer</h3>
+              <p>Model market variables and analyze optimal trading outcomes with AI-powered probabilistic analysis.</p>
+              <a href="https://probabilistic.vercel.app" target="_blank" class="tool-link">Launch App →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://notebooklm.google.com', '_blank')">
+              <div class="tool-icon">📚</div>
+              <h3>NotebookLM Research</h3>
+              <p>Access curated trading whitepapers, ICT strategy documentation, and financial analysis notebooks.</p>
+              <a href="https://notebooklm.google.com" target="_blank" class="tool-link">Explore Knowledge →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://gemini.google.com', '_blank')">
+              <div class="tool-icon">✨</div>
+              <h3>Gemini AI Assistant</h3>
+              <p>Get real-time AI insights on market trends, trading strategies, and probability calculations.</p>
+              <a href="https://gemini.google.com" target="_blank" class="tool-link">Chat with AI →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.tradingview.com', '_blank')">
+              <div class="tool-icon">📈</div>
+              <h3>TradingView Integration</h3>
+              <p>Sync with real-time market data, advanced charting, and professional trading tools.</p>
+              <a href="https://www.tradingview.com" target="_blank" class="tool-link">Access Market Data →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.forexfactory.com/calendar', '_blank')">
+              <div class="tool-icon">📅</div>
+              <h3>Economic Calendar</h3>
+              <p>Track major economic events and their probabilistic impact on currency markets.</p>
+              <a href="https://www.forexfactory.com/calendar" target="_blank" class="tool-link">View Calendar →</a>
+            </div>
+
+            <div class="tool-card" onclick="window.open('https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html', '_blank')">
+              <div class="tool-icon">🏦</div>
+              <h3>Fed Rates Watch</h3>
+              <p>Monitor interest rate probabilities and policy decision outcomes in real-time.</p>
+              <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="tool-link">Track Rates →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer role="contentinfo">
-    <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education</p>
+    <p>&copy; 2026 KibueFx Landers. All rights reserved. | Advanced Trading Education Powered by Probabilistic AI Analysis</p>
   </footer>
 
   <script>
+    // Dropdown Toggle
+    function toggleDropdown(event) {
+      const header = event.currentTarget;
+      const content = document.getElementById('dropdownContent');
+      const icon = document.getElementById('dropdownIcon');
+      
+      content.classList.toggle('open');
+      icon.classList.toggle('open');
+    }
+
     // DNA Animation Canvas
     const canvas = document.getElementById('dnaCanvas');
     const ctx = canvas.getContext('2d');
@@ -531,7 +746,7 @@
         this.life -= this.decay;
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.15; // gravity
+        this.vy += 0.15;
       }
 
       draw(ctx, hue) {
@@ -565,7 +780,6 @@
       }
       ctx.stroke();
 
-      // Draw complementary strand
       ctx.strokeStyle = `rgba(118, 75, 162, ${alpha})`;
       for (let i = 0; i < 100; i++) {
         const t = i / 100;
@@ -582,7 +796,6 @@
       }
       ctx.stroke();
 
-      // Draw base pairs
       ctx.strokeStyle = `rgba(255, 107, 107, ${alpha * 0.5})`;
       ctx.lineWidth = 1;
       for (let i = 0; i < 20; i++) {
@@ -604,7 +817,6 @@
     function animateDNA() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Background gradient
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, 'rgba(102, 126, 234, 0.02)');
       gradient.addColorStop(1, 'rgba(118, 75, 162, 0.02)');
@@ -615,22 +827,18 @@
 
       const phase1Duration = 0.4;
       const phase2Duration = 0.4;
-      const phase3Duration = 0.2;
 
       if (animationProgress < phase1Duration) {
-        // Phase 1: Draw and rotate DNA helix
         const alpha = 1;
         const rotation = (animationProgress / phase1Duration) * Math.PI * 2;
         drawDNAHelix(canvas.width / 2, canvas.height / 2, 60, 200, rotation, alpha);
       } else if (animationProgress < phase1Duration + phase2Duration) {
-        // Phase 2: Disintegrate into particles
         const disintegrateProgress = (animationProgress - phase1Duration) / phase2Duration;
         const alpha = 1 - disintegrateProgress;
 
         const rotation = Math.PI * 2 + (disintegrateProgress) * Math.PI * 2;
         drawDNAHelix(canvas.width / 2, canvas.height / 2, 60, 200, rotation, alpha);
 
-        // Generate particles
         if (Math.random() > 0.7) {
           for (let i = 0; i < 5; i++) {
             const angle = Math.random() * Math.PI * 2;
@@ -640,13 +848,8 @@
             particles.push(new DNAHelix(x, y));
           }
         }
-      } else if (animationProgress < phase1Duration + phase2Duration + phase3Duration) {
-        // Phase 3: Transition to candlestick (fade out particles)
-        const fadeProgress = (animationProgress - phase1Duration - phase2Duration) / phase3Duration;
-        // Particles continue to fall
       }
 
-      // Update and draw particles
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update();
         particles[i].draw(ctx, 200 + Math.random() * 100);
@@ -655,8 +858,7 @@
         }
       }
 
-      // Reset animation
-      if (animationProgress > phase1Duration + phase2Duration + phase3Duration) {
+      if (animationProgress > phase1Duration + phase2Duration) {
         animationProgress = 0;
         particles = [];
       }
@@ -719,7 +921,6 @@
       candlestickData.forEach((candle, index) => {
         const bodyTop = (candle.high - Math.max(candle.open, candle.close)) / priceRange * 100;
         const bodyHeight = Math.abs(candle.close - candle.open) / priceRange * 100 || 2;
-        const wickTop = 0;
         const wickHeight = (candle.high - candle.low) / priceRange * 100;
 
         const candleDiv = document.createElement('div');
@@ -785,11 +986,10 @@
     function toggleCandleType() {
       if (currentPattern === 'random') {
         currentPattern = 'trending';
-        // Generate trending data
         candlestickData = [];
         let price = 1200;
         for (let i = 0; i < 12; i++) {
-          price += Math.random() * 40 - 5; // Uptrend bias
+          price += Math.random() * 40 - 5;
           const open = price;
           const close = price + (Math.random() - 0.3) * 30;
           const high = Math.max(open, close) + Math.random() * 20;
